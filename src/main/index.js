@@ -1,6 +1,8 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
+
+import { autoUpdater } from 'electron-updater'
 
 /**
  * Set `__static` path to static files in production
@@ -32,7 +34,11 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+// app.on('ready', createWindow)
+app.on('ready', function () {
+  createWindow()
+  autoUpdater.checkForUpdates()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -43,7 +49,12 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
+    autoUpdater.checkForUpdates()
   }
+})
+
+ipcMain.on('quitAndInstall', (event, arg) => {
+  autoUpdater.quitAndInstall()
 })
 
 /**

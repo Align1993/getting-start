@@ -1,4 +1,10 @@
+#misc
 .DS_Store
+
+# production
+/build
+/dist
+
 dist/electron/*
 dist/web/*
 build/*
@@ -11,4 +17,4 @@ thumbs.db
 !.gitkeep
 electron-builder.yml
 # test
-test/
+/test
