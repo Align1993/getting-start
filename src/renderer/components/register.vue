@@ -26,7 +26,7 @@
   import Alert from '../components/Alert'
   export default {
     methods: {
-      async submit() {
+      async submit () {
         const name = document.form1.username.value.trim()
         const password = document.form1.password.value.trim()
         let src
@@ -57,11 +57,11 @@
           })
         }
       },
-      login() {
+      login () {
         this.$router.push({path: 'login'})
       }
     },
-    mounted() {
+    mounted () {
       if (!this.svgmodal) {
         const svg = SvgModal()
         this.$store.commit('setSvgModal', svg)

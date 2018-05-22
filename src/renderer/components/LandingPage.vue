@@ -38,11 +38,9 @@
        },
        check () {
          if (this.username === '') {
-           this.$toast('请输入账号')
            return false
          }
          if (this.password === '') {
-           this.$toast('请输入6-24位密码')
            return false
          }
          return true

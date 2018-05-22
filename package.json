@@ -1,6 +1,6 @@
 {
   "name": "getting-start",
-  "version": "0.0.1",
+  "version": "0.5.4",
   "author": "align1993 <wy852385689@qq.com>",
   "homepage": "./dist/electron/",
   "description": "An electron-vue project",
@@ -8,8 +8,8 @@
   "main": "./dist/electron/main.js",
   "repository": "https://github.com/Align1993/getting-start",
   "scripts": {
-    "build": "node .electron-vue/build.js && electron-builder",
-    "build:dir": "node .electron-vue/build.js && electron-builder --dir",
+    "build": "node .electron-vue/build.js && electron-builder -p always",
+    "build:dir": "node .electron-vue/build.js && electron-builder --dir -p always",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
     "ship": "build --dir -p always",
@@ -23,43 +23,6 @@
     "test": "npm run unit && npm run e2e",
     "unit": "karma start test/unit/karma.conf.js",
     "postinstall": "npm run lint:fix"
-  },
-  "build": {
-    "appId": "org.simulatedgreg.electron-vue",
-    "publish": {
-      "provider": "github",
-      "token": "6625c08203de0ffd7b038ff4f486d6e3e038b6f7"
-    },
-    "directories": {
-      "output": "build"
-    },
-    "files": [
-      "dist/electron/**/*"
-    ],
-    "dmg": {
-      "contents": [
-        {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
-        }
-      ]
-    },
-    "mac": {
-      "icon": "build/icons/icon.icns"
-    },
-    "win": {
-      "icon": "build/icons/icon.ico"
-    },
-    "linux": {
-      "icon": "build/icons"
-    }
   },
   "dependencies": {
     "axios": "^0.16.1",

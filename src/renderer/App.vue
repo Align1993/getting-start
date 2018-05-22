@@ -1,20 +1,15 @@
 <template>
   <div id="app">
+    <update-btn></update-btn>
     <router-view></router-view>
-     <button id="ready" onClick="ipcRenderer.send('quitAndInstall')">no updates ready</button>
   </div>
 </template>
 
 <script>
-  const ipcRenderer = require('electron').ipcRenderer
-  // wait for an updateReady message
-  ipcRenderer.on('updateReady', function (event, text) {
-    // changes the text of the button
-    var container = document.getElementById('ready')
-    container.innerHTML = 'new version ready!'
-  })
+  import UpdateBtn from '@/components/public/UpdateBtn'
   export default {
-    name: 'getting-start'
+    name: 'getting-start',
+    components: {UpdateBtn}
   }
 </script>
 
