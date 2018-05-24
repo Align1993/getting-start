@@ -1,7 +1,9 @@
 
 <template>
   <div class="flex_cont">
-    <div class="left flex_item">左侧菜单</div>
+    <div class="left flex_item">左侧菜单
+      <a href="#/login" class="loginlink">go back</a>
+    </div>
     <div class="center flex_item">
       <div class="center_body">我是聊天上下文</div>
       <div class="center_foot">

@@ -15,13 +15,14 @@
       </div>         
     </div>
     <div class="login_bg"></div>
+    <a href="/" class="loginlink">go back</a>
   </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
    export default {
-     name: 'landing-page',
+     name: 'logining-page',
      data () {
        return {
          username: '',
@@ -34,7 +35,7 @@
        },
        submit () {
          if (!this.check()) return false
-         location.href = '#/login'
+         location.href = '#/index'
        },
        check () {
          if (this.username === '') {

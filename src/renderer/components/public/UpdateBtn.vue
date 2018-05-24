@@ -1,29 +1,34 @@
 <template>
-    <div><button @click="sendProcess()">{{ txt }}</button></div>
+    <div><button id="title" @click="sendProcess()">{{ version }}</button>
+    <button id="title" @click="checkUpdate">checkUpdate</button></div>
 </template>
 <script>
+
+const ipcRenderer = require('electron').ipcRenderer
 export default {
   name: 'updateBtn',
   data () {
     return {
-      ipcRenderer: require('electron').ipcRenderer,
-      txt: 'no updates ready'
+      version: 'no updates ready'
     }
   },
   mounted: function () {
     // alert(0)
     // wait for an updateReady message
-    // this.$nextTick(function () {
-    //   // this.txt = 'yyyy'
-    //   var _this = this
-    //   _this.ipcRenderer.on('updateReady', function (event, text) {
-    //     _this.txt = 'new version ready!'
-    //   })
-    // })
+    this.$nextTick(function () {
+      // this.txt = 'yyyy'
+      alert(this.version)
+      ipcRenderer.on('updateReady', function (event, version) {
+        this.version = `current version: ${version}`
+      })
+    })
   },
   methods: {
+    checkUpdate () {
+      // autoUpdater.checkForUpdates()
+    },
     sendProcess () {
-      this.ipcRenderer.send('quitAndInstall')
+      // ipcRenderer.send('quitAndInstall')
     }
   }
 }
