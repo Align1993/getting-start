@@ -1,8 +1,9 @@
 
 <template>
   <div class="flex_cont">
-    <div class="left flex_item">左侧菜单
-      <a href="#/login" class="loginlink">go back</a>
+     
+    <div class="left flex_item">
+      <header-bar></header-bar>
     </div>
     <div class="center flex_item">
       <div class="center_body">我是聊天上下文</div>
@@ -14,8 +15,10 @@
   </div>
 </template>
 <script>
+   import HeaderBar from './common/header'
    export default {
-     name: 'index-page'
+     name: 'index-page',
+     components: { HeaderBar }
    }
 </script>
 <style lang='less'>

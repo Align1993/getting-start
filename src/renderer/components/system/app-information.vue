@@ -3,6 +3,7 @@
     <button class="demo-button" @click="getVersionInfo">{{ electronVersion }}</button>
     <button class="demo-button" @click="getAppInfo">{{ appInfo }}</button>
     <button class="demo-button" @click="getAppVersion">{{ appVersion }}</button>
+    <button id="shortcuts-demo-toggle" class="js-container-target demo-toggle-button">Register a global keyboard shortcut(CommandOrControl+Alt+K)</button>
   </div>
 </template>
 <script type="text/javascript">

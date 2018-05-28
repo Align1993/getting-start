@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, globalShortcut, Menu } from 'electron'
 import { autoUpdater } from 'electron-updater'
 const path = require('path')
 const glob = require('glob')
@@ -25,7 +25,7 @@ function initialize () {
   if (shouldQuit) return app.quit()
   // loadDemos()
   // autoUpdater.updateMenu()
-  function createWindow () {
+  function createWindow () { // 定制窗口
     /**
      * Initial window options
      */
@@ -33,6 +33,7 @@ function initialize () {
       height: 563,
       useContentSize: true,
       width: 1006,
+      frame: false,
       title: app.getName()
     })
     mainWindow.loadURL(winURL)
@@ -41,9 +42,22 @@ function initialize () {
     })
   }
   app.on('ready', () => {
+    globalShortcut.register('CommandOrControl+Alt+K', () => {
+      dialog.showMessageBox({
+        type: 'info',
+        message: 'Success!',
+        detail: 'You pressed the registered global shortcut keybinding.',
+        buttons: ['OK']
+      })
+    })
+  })
+  app.on('ready', () => {
     createWindow()
-    autoUpdater.checkForUpdates()
+    // autoUpdater.checkForUpdates() // 检查是否有有效更新
     // autoUpdater.initialize()
+  })
+  app.on('will-quit', () => {
+    globalShortcut.unregisterAll()
   })
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -57,7 +71,7 @@ function initialize () {
   })
 }
 // when the update is ready, notify the BrowserWindow
-autoUpdater.on('update-downloaded', (info) => {
+autoUpdater.on('update-downloaded', (info) => { // 当更新准备，通知浏览器窗口
   mainWindow.webContents.send('updateReady')
 })
 ipcMain.on('get-app-path', (event) => {
@@ -76,9 +90,48 @@ ipcMain.on('open-file-dialog', (event) => {
   })
 })
 ipcMain.on('quitAndInstall', (event, arg) => {
-  autoUpdater.quitAndInstall()
+  autoUpdater.quitAndInstall() // 退出并重新安装
 })
-
+ipcMain.on('checkForUpdates', (event, arg) => {
+  autoUpdater.checkForUpdates() // 退出并重新安装
+})
+ipcMain.on('close', e => mainWindow.close())
+ipcMain.on('about', e => {
+  Menu.setApplicationMenu(null)
+  let modal = new BrowserWindow({
+    modal: true,
+    width: 400,
+    height: 200,
+    resizable: false,
+    parent: mainWindow,
+    icon: '../../build/icons/icon.ico',
+    title: 'yyyy'
+  })
+  modal.loadURL(winURL + '#/about')
+  modal.once('ready-to-show', () => {
+    modal.show()
+  })
+})
+let modalUpdateSetup
+ipcMain.on('close-update-setup', e => {
+  modalUpdateSetup.close()
+})
+ipcMain.on('setup-update', e => {
+  Menu.setApplicationMenu(null)
+  modalUpdateSetup = new BrowserWindow({
+    modal: true,
+    width: 400,
+    height: 200,
+    resizable: false,
+    parent: mainWindow,
+    icon: '../../build/icons/icon.ico',
+    title: 'yyyy'
+  })
+  modalUpdateSetup.loadURL(winURL + '#/updateSetup')
+  modalUpdateSetup.once('ready-to-show', () => {
+    modalUpdateSetup.show()
+  })
+})
 function loadDemos () {
   const files = glob.sync(path.join(__dirname, 'main-process', '/*.js'))
   files.forEach((file) => { require(file) })

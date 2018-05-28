@@ -1,6 +1,6 @@
 <template>
     <div><button id="title" @click="sendProcess()">{{ version }}</button>
-    <button id="title" @click="checkUpdate">checkUpdate</button></div>
+    <button id="title" @click="checkUpdate">{{ msg }} 点我检查更新</button></div>
 </template>
 <script>
 
@@ -9,26 +9,34 @@ export default {
   name: 'updateBtn',
   data () {
     return {
-      version: 'no updates ready'
+      version: 'no updates ready',
+      msg: ''
     }
   },
+  beforeMount () {
+    this.getVersion()
+  },
   mounted: function () {
-    // alert(0)
-    // wait for an updateReady message
-    this.$nextTick(function () {
-      // this.txt = 'yyyy'
-      alert(this.version)
-      ipcRenderer.on('updateReady', function (event, version) {
-        this.version = `current version: ${version}`
-      })
-    })
   },
   methods: {
+    getVersion () {
+      var _this = this
+      ipcRenderer.send('get-app-version')
+      ipcRenderer.on('got-app-version', function (event, version) {
+        _this.msg = `current version: ${version}`
+      })
+    },
     checkUpdate () {
-      // autoUpdater.checkForUpdates()
+      var _this = this
+      ipcRenderer.send('checkForUpdates')
+      ipcRenderer.on('updateReady', function (event, text) {
+        alert('updateReady!')
+        _this.msg = 'new version ready!'
+        _this.version = '点我更新吧'
+      })
     },
     sendProcess () {
-      // ipcRenderer.send('quitAndInstall')
+      ipcRenderer.send('quitAndInstall')
     }
   }
 }
