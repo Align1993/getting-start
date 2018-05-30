@@ -1,6 +1,6 @@
 {
   "name": "getting-start",
-  "version": "1.9.7",
+  "version": "2.1.8",
   "author": "align1993 <wy852385689@qq.com>",
   "homepage": "./dist/electron/",
   "description": "An electron-vue project",

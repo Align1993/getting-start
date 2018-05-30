@@ -5,7 +5,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/menu',
       name: 'menu-slider',
       component: require('@/components/MenuSlider').default
     },
@@ -20,12 +20,17 @@ export default new Router({
       component: require('@/components/modal/UpdateOptions').default
     },
     {
+      path: '/checkingUpdate',
+      name: 'checking-page',
+      component: require('@/components/modal/CheckingUpdate').default
+    },
+    {
       path: '/index',
       name: 'index-page',
       component: require('@/components/IndexPage').default
     },
     {
-      path: '/login',
+      path: '/',
       name: 'logining-page',
       component: require('@/components/LoginPage').default
     },

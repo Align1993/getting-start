@@ -53,7 +53,7 @@ function initialize () {
   })
   app.on('ready', () => {
     createWindow()
-    // autoUpdater.checkForUpdates() // 检查是否有有效更新
+    autoUpdater.checkForUpdates() // 检查是否有有效更新
     // autoUpdater.initialize()
   })
   app.on('will-quit', () => {
@@ -70,10 +70,30 @@ function initialize () {
     }
   })
 }
-// when the update is ready, notify the BrowserWindow
-autoUpdater.on('update-downloaded', (info) => { // 当更新准备，通知浏览器窗口
-  mainWindow.webContents.send('updateReady')
+function createModal (modalName, config, url) {
+  Menu.setApplicationMenu(null)
+  modalName = new BrowserWindow(config)
+  modalName.loadURL(url)
+  modalName.once('ready-to-show', () => {
+    modalName.show()
+  })
+}
+// autoUpdater.on('update-not-available', (info) => {
+//   mainWindow.webContents.send('update-not-available')
+// })
+autoUpdater.on('checking-for-update', () => {
+  mainWindow.webContents.send('checking-for-update')
 })
+autoUpdater.on('update-not-available', () => {
+  mainWindow.webContents.send('update-not-available')
+})
+// when the update is ready, notify the BrowserWindow
+// autoUpdater.on('update-downloaded', (info) => { // 当更新准备，通知浏览器窗口
+//   mainWindow.webContents.send('updateReady', info)
+// })
+// autoUpdater.on('update-not-avilable', (info) => {
+//   mainWindow.webContents.send('update-not-available')
+// })
 ipcMain.on('get-app-path', (event) => {
   event.sender.send('got-app-path', app.getAppPath())
 })
@@ -97,8 +117,9 @@ ipcMain.on('checkForUpdates', (event, arg) => {
 })
 ipcMain.on('close', e => mainWindow.close())
 ipcMain.on('about', e => {
-  Menu.setApplicationMenu(null)
-  let modal = new BrowserWindow({
+  let modal
+  let url = winURL + '#/about'
+  createModal(modal, {
     modal: true,
     width: 400,
     height: 200,
@@ -106,19 +127,35 @@ ipcMain.on('about', e => {
     parent: mainWindow,
     icon: '../../build/icons/icon.ico',
     title: 'yyyy'
-  })
-  modal.loadURL(winURL + '#/about')
-  modal.once('ready-to-show', () => {
-    modal.show()
-  })
+  }, url)
 })
 let modalUpdateSetup
 ipcMain.on('close-update-setup', e => {
   modalUpdateSetup.close()
 })
+let modalUpdateChecking
+ipcMain.on('checkVersion', e => {
+  let url = winURL + '#/checkingUpdate'
+  createModal(modalUpdateChecking, {
+    modal: true,
+    width: 400,
+    height: 200,
+    parent: mainWindow,
+    icon: '../../build/icons/icon.ico',
+    title: 'checking'
+  }, url)
+  // when the update is ready, notify the BrowserWindow
+  autoUpdater.on('update-downloaded', (info) => { // 当更新准备，通知浏览器窗口
+    modalUpdateChecking.webContents.send('updateReady')
+  })
+  autoUpdater.on('update-not-available', () => {
+    modalUpdateChecking.webContents.send('update-not-available')
+  })
+})
 ipcMain.on('setup-update', e => {
-  Menu.setApplicationMenu(null)
-  modalUpdateSetup = new BrowserWindow({
+  let modal
+  let url = winURL + '#/updateSetup'
+  createModal(modal, {
     modal: true,
     width: 400,
     height: 200,
@@ -126,12 +163,9 @@ ipcMain.on('setup-update', e => {
     parent: mainWindow,
     icon: '../../build/icons/icon.ico',
     title: 'yyyy'
-  })
-  modalUpdateSetup.loadURL(winURL + '#/updateSetup')
-  modalUpdateSetup.once('ready-to-show', () => {
-    modalUpdateSetup.show()
-  })
+  }, url)
 })
+
 function loadDemos () {
   const files = glob.sync(path.join(__dirname, 'main-process', '/*.js'))
   files.forEach((file) => { require(file) })

@@ -15,12 +15,12 @@
       </div>         
     </div>
     <div class="login_bg"></div>
-    <a href="/" class="loginlink">go back</a>
   </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+   const ipcRenderer = require('electron').ipcRenderer
    export default {
      name: 'logining-page',
      data () {
@@ -29,10 +29,23 @@
          password: ''
        }
      },
+     mounted () {
+       ipcRenderer.send('checkForUpdates')
+       ipcRenderer.send('checkVersion')
+       ipcRenderer.on('checking-for-update', function (event, text) {
+         alert('checking-for-update')
+       })
+       ipcRenderer.on('update-not-available', function (event, text) {
+         alert('当前为最新版本')
+       })
+       ipcRenderer.on('updateReady', function (event, text) {
+         alert('updateReady!')
+       })
+       ipcRenderer.on('update-available', function (event, text) {
+         ipcRenderer.send('quitAndInstall')
+       })
+     },
      methods: {
-       open (link) {
-         this.$electron.shell.openExternal(link)
-       },
        submit () {
          if (!this.check()) return false
          location.href = '#/index'

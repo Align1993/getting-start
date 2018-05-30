@@ -9,8 +9,9 @@
            <li v-for="item in item.options" @click="handler(item.handler)">{{ item.txt }}</li>
          </ul>
        </li>
+       <li class="menu_item">{{version}}</li>
      </ul>
-   </div> 
+   </div>
 </template>
 <script>
 const { remote, BrowserWindow, ipcRenderer } = require('electron')
@@ -24,23 +25,28 @@ export default {
   data () {
     return {
       msg: 'close',
+      version: '',
       memus: [
         {txt: '文件', options: [{txt: '退出', handler: 'quit'}, {txt: '检查更新', handler: 'checkUpdate'}]},
         {txt: '编辑'},
         {txt: '视图'},
         {txt: '功能'},
         {txt: '历史'},
-        {txt: '设置', options: [{txt: '版本', handler: 'versionControl'}]}
+        {txt: '设置', options: [{txt: '当前版本', handler: 'getAppVersion'}, {txt: '更新设置', handler: 'versionControl'}]}
       ],
       activeMenu: false
     }
   },
+  beforeMount () {
+    this.getVersion()
+  },
   mounted () {
-    alert(0)
     if (localStorage.getItem('updateOptions') === '0') {
+      alert('开始启动自动更新')
       ipcRenderer.send('checkForUpdates')
       ipcRenderer.on('updateReady', function (event, text) {
         alert('updateReady!')
+        ipcRenderer.send('quitAndInstall')
       })
     }
   },
@@ -68,7 +74,15 @@ export default {
         // _this.msg = 'new version ready!'
         // _this.version = '点我更新吧'
         })
+        ipcRenderer.send('quitAndInstall')
       }
+    },
+    getVersion () {
+      var _this = this
+      ipcRenderer.send('get-app-version')
+      ipcRenderer.on('got-app-version', function (event, version) {
+        _this.version = `v: ${version}`
+      })
     },
     versionControl () {
       ipcRenderer.send('setup-update')
