@@ -4,5 +4,5 @@ var path = require('path')
 var cp = require('child_process')
 var app = express()
 
-app.use('/', express.static(__dirname + '/static'))
+app.use('/', express.static(__dirname + '/wwwroot'))
 app.listen(3000)

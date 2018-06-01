@@ -20,9 +20,9 @@ export default new Router({
       component: require('@/components/modal/UpdateOptions').default
     },
     {
-      path: '/checkingUpdate',
+      path: '/checking',
       name: 'checking-page',
-      component: require('@/components/modal/CheckingUpdate').default
+      component: require('@/components/CheckingUpdate').default
     },
     {
       path: '/index',
@@ -31,8 +31,8 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'logining-page',
-      component: require('@/components/LoginPage').default
+      name: 'check-update',
+      component: require('@/components/CheckVersion').default
     },
     {
       path: '*',

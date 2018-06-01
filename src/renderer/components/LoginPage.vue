@@ -1,5 +1,6 @@
 <template>
   <div id="wrapper">
+    <vue-dialog :show="true" :msg="text"></vue-dialog>
     <div class="login">
     <div class="login_2">
       <div class="input">
@@ -12,7 +13,7 @@
       </div>     
       <div class="button" @click="submit">
         登 录
-      </div>         
+      </div>    
     </div>
     <div class="login_bg"></div>
   </div>
@@ -20,29 +21,31 @@
 </template>
 
 <script type="text/ecmascript-6">
+   import VueDialog from '@/components/common/dialog'
    const ipcRenderer = require('electron').ipcRenderer
    export default {
      name: 'logining-page',
+     components: {VueDialog},
      data () {
        return {
+         version: '',
+         text: '',
          username: '',
          password: ''
        }
      },
      mounted () {
-       ipcRenderer.send('checkForUpdates')
+       var _this = this
        ipcRenderer.send('checkVersion')
-       ipcRenderer.on('checking-for-update', function (event, text) {
-         alert('checking-for-update')
-       })
-       ipcRenderer.on('update-not-available', function (event, text) {
-         alert('当前为最新版本')
-       })
-       ipcRenderer.on('updateReady', function (event, text) {
-         alert('updateReady!')
-       })
-       ipcRenderer.on('update-available', function (event, text) {
-         ipcRenderer.send('quitAndInstall')
+       ipcRenderer.on('message', function (event, text) {
+         if (text === 'startChecking') {
+           _this.text = '检测中...'
+         } else if (text.version) {
+           console.log(text.version)
+         } else {
+           console.log(text)
+           _this.text = text
+         }
        })
      },
      methods: {

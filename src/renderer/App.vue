@@ -20,7 +20,7 @@
   #app {
     height: 100%
   }
-  .div-flex1 {
+  /* .div-flex1 {
     flex: 1
   }
   .demo-button {
@@ -48,5 +48,5 @@
     opacity: 1;
     transform: translateX(0);
     transition: visibility 0s 0s linear , opacity .36s ease-out, transform .36s ease-out;
-  }
+  } */
 </style>

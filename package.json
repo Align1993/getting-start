@@ -1,12 +1,11 @@
 {
   "name": "getting-start",
-  "version": "2.1.8",
+  "version": "2.6.0",
   "author": "align1993 <wy852385689@qq.com>",
   "homepage": "./dist/electron/",
   "description": "An electron-vue project",
   "license": null,
   "main": "./dist/electron/main.js",
-  "repository": "https://github.com/Align1993/getting-start",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder -p always",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir -p always",
@@ -26,6 +25,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "electron-log": "^2.2.14",
     "electron-updater": "^2.21.10",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",
