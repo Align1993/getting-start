@@ -1,9 +1,10 @@
 {
   "name": "getting-start",
-  "version": "2.6.7",
+  "version": "2.7.4",
   "author": "align1993 <wy852385689@qq.com>",
   "homepage": "./dist/electron/",
   "description": "An electron-vue project",
+  "repository": "https://github.com/Align1993/getting-start",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -51,7 +52,7 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^1.7.5",
-    "electron-builder": "^19.19.1",
+    "electron-builder": "^19.56.2",
     "electron-debug": "^1.4.0",
     "electron-devtools-installer": "^2.2.0",
     "eslint": "^4.4.1",

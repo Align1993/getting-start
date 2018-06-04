@@ -1,9 +1,7 @@
-
 <template>
   <div class="flex_cont">
-     
     <div class="left flex_item">
-      <header-bar></header-bar>
+      会话联系人
     </div>
     <div class="center flex_item">
       <div class="center_body">我是聊天上下文</div>
@@ -15,10 +13,8 @@
   </div>
 </template>
 <script>
-   import HeaderBar from './common/header'
    export default {
-     name: 'index-page',
-     components: { HeaderBar }
+     name: 'index-page'
    }
 </script>
 <style lang='less'>

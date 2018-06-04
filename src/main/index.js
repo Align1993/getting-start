@@ -60,7 +60,8 @@ autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow(0, 'Checking for update...')
 })
 autoUpdater.on('update-available', (info) => {
-  sendStatusToWindow(1, 'Update available.')
+  let version = info.version
+  sendStatusToWindow(1, version)
 })
 autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow(2, 'Update not available.')
@@ -73,6 +74,8 @@ autoUpdater.on('download-progress', (progressObj) => {
   message = message + ' - Downloaded ' + progressObj.percent + '%'
   message = message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
   let percent = progressObj.percent
+  percent = Math.round(percent)
+  let total = progressObj.total
   sendStatusToWindow(3, percent)
   // let percent = progressObj.percent + '%'
   // log.info(percent)
@@ -82,7 +85,7 @@ autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow(4, 'Update downloaded')
   setTimeout(function () {
     autoUpdater.quitAndInstall()
-  }, 50000)
+  }, 5000)
 })
 app.on('ready', function () {
   // Create the Menu
