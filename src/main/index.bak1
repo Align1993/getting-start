@@ -39,16 +39,12 @@ let win
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html#v${app.getVersion()}`
-function sendStatusToWindow (state, text) {
+function sendStatusToWindow (text) {
   log.info(text)
-  win.webContents.send('message', state, text)
+  win.webContents.send('message', text)
 }
 function createDefaultWindow () {
-  win = new BrowserWindow({
-    width: 600,
-    height: 460,
-    frame: false
-  })
+  win = new BrowserWindow()
   win.webContents.openDevTools()
   win.on('closed', () => {
     win = null
@@ -57,29 +53,25 @@ function createDefaultWindow () {
   return win
 }
 autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow(0, 'Checking for update...')
+  sendStatusToWindow('Checking for update...')
 })
 autoUpdater.on('update-available', (info) => {
-  sendStatusToWindow(1, 'Update available.')
+  sendStatusToWindow('Update available.')
 })
 autoUpdater.on('update-not-available', (info) => {
-  sendStatusToWindow(2, 'Update not available.')
+  sendStatusToWindow('Update not available.')
 })
 autoUpdater.on('error', (err) => {
-  sendStatusToWindow(5, 'Error in auto-updater. ' + err)
+  sendStatusToWindow('Error in auto-updater. ' + err)
 })
 autoUpdater.on('download-progress', (progressObj) => {
   let message = 'Download speed: ' + progressObj.bytesPerSecond
   message = message + ' - Downloaded ' + progressObj.percent + '%'
   message = message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
-  let percent = progressObj.percent
-  sendStatusToWindow(3, percent)
-  // let percent = progressObj.percent + '%'
-  // log.info(percent)
-  // win.webContents.send('progress', percent)
+  sendStatusToWindow(message)
 })
 autoUpdater.on('update-downloaded', (info) => {
-  sendStatusToWindow(4, 'Update downloaded')
+  sendStatusToWindow('Update downloaded')
   setTimeout(function () {
     autoUpdater.quitAndInstall()
   }, 50000)

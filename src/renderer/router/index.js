@@ -32,7 +32,7 @@ export default new Router({
     {
       path: '/',
       name: 'check-update',
-      component: require('@/components/CheckVersion').default
+      component: require('@/components/system/check-update').default
     },
     {
       path: '*',
