@@ -18,3 +18,4 @@ thumbs.db
 electron-builder.yml
 # test
 /test
+/wwwroot
