@@ -63,6 +63,14 @@ function startRenderer () {
       compiler,
       {
         contentBase: path.join(__dirname, '../'),
+        proxy: {
+          '/api': {
+            target: 'http://localhost:3000',
+            secure: false,
+            changeOrigin: true,
+            pathRewrite: {'^/api': ''}
+          }
+        },
         quiet: true,
         before (app, ctx) {
           app.use(hotMiddleware)

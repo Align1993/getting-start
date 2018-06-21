@@ -1,0 +1,14 @@
+{
+  "code": 0,
+  "message": "",
+  "data": {
+    "innerVersion": 1,
+    "license": true,
+    "updateWay": "auto",
+    "name": "Electron API Demos v1.3.0",
+    "size": "35M",
+    "versionOuter": "5.0.0",
+    "detail": "bug修复",
+    "release_date": "2018-05-24T09:39:45.607Z"
+  }
+}

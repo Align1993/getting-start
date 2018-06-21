@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'shortcuts-demo'  
+  name: 'shortcuts-demo'
 }
 </script>
 
